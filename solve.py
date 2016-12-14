@@ -41,7 +41,6 @@ def gen_galaxy(N,omega,vrange,c,v,vconst,rot=False):
     v0 = np.cross(r0n,r0n2)*np.sign(r0n[:,2])[:,None]
     myr = np.linalg.norm(r0,axis=1)
     base = np.sqrt(myr)
-    #xpowx = 0.2*(60*myr)**(1/(15*myr))
     bhc = base
     bhc[myr>=0.25] = 0 
     v0 *= (vconst*scipy.special.erf(np.linalg.norm(r0,axis=1)/(np.sqrt(2)*omega))+bh*bhc)[:,None]
@@ -63,22 +62,21 @@ if __name__ == "__main__":
 
     omega = 0.15
     vrange = 1
+    gp = 32
+    rx = 3
+    ry = 0
+    vx = 0.5
 
-    orbitv = 18
-    orbitvf = 1
-    omega2=1e-5
-    r0,v0 = gen_galaxy(N,omega,vrange,[-3,0,0],[0.5,0,0],32,rot=True)
-    r1,v1 = gen_blackhole(N//100,[-3,0,0],[0.5,0,0])
-
+    r0,v0 = gen_galaxy(N,omega,vrange,[-rx,-ry,0],[vx,0,0],gp,rot=True)
+    r1,v1 = gen_blackhole(N//100,[-rx,-ry,0],[vx,0,0])
     r0 = np.append(r0,r1,axis=0)
     v0 = np.append(v0,v1,axis=0)
-    r1,v1 = gen_galaxy(N,omega,vrange,[3,0,0],[-0.5,0,0],32)
+    r1,v1 = gen_galaxy(N,omega,vrange,[rx,ry,0],[-vx,0,0],gp)
     r0 = np.append(r0,r1,axis=0)
     v0 = np.append(v0,v1,axis=0)
-    r1,v1 = gen_blackhole(N//100,[3,0,0],[-0.5,0,0])
+    r1,v1 = gen_blackhole(N//100,[rx,ry,0],[-vx,0,0])
     r0 = np.append(r0,r1,axis=0)
     v0 = np.append(v0,v1,axis=0)
-
 
     tt,rr = ode.symplectic(vnorbit,r0,v0,0,tf,nstep)
 

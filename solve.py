@@ -41,7 +41,7 @@ def gen_galaxy(N,omega,vrange,c,v,vconst,rot=False):
     v0 = np.cross(r0n,r0n2)*np.sign(r0n[:,2])[:,None]
     myr = np.linalg.norm(r0,axis=1)
     base = np.sqrt(myr)
-    xpowx = 0.2*(60*myr)**(1/(15*myr))
+    #xpowx = 0.2*(60*myr)**(1/(15*myr))
     bhc = base
     bhc[myr>=0.25] = 0 
     v0 *= (vconst*scipy.special.erf(np.linalg.norm(r0,axis=1)/(np.sqrt(2)*omega))+bh*bhc)[:,None]
